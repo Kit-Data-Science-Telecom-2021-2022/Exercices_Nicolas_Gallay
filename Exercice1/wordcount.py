@@ -46,22 +46,61 @@ import sys
 # Then print_words() and print_top() can just call the utility function.
 
 ###
+def helper(filename):
+    data = open(filename)
+    list_words = []
+    dicCount = {}
+    for line in data:
+        for words in line.split():
+            list_words.append(words.lower())
+            
+    for element in list_words:
+        dicCount[element] = list_words.count(element)
+        
+    return dicCount
+
+
+
+def print_words(filename):
+    
+    dicCount = helper(filename)
+    
+    for keys in sorted(dicCount.keys()):
+        print(keys, dicCount[keys])
+        
+    return
+
+def print_top(filename):
+    
+    dicCount = helper(filename)  
+    sorted_dict = {}
+    sorted_keys = reversed(sorted(dicCount, key=dicCount.get))
+
+    for w in sorted_keys:
+        sorted_dict[w] = dicCount[w]
+     
+    for item in list(sorted_dict.items())[:20]:
+        print (item[0], item[1])    
+
+    return
+
 
 # This basic command line argument parsing code is provided and
 # calls the print_words() and print_top() functions which you must define.
 def main():
   if len(sys.argv) != 3:
-    print 'usage: ./wordcount.py {--count | --topcount} file'
-    sys.exit(1)
+    print ('usage: ./wordcount.py {--count | --topcount} file')
+    #sys.exit(1)
 
   option = sys.argv[1]
   filename = sys.argv[2]
+
   if option == '--count':
     print_words(filename)
   elif option == '--topcount':
     print_top(filename)
   else:
-    print 'unknown option: ' + option
+    print ('unknown option: ' + option)
     sys.exit(1)
 
 if __name__ == '__main__':
